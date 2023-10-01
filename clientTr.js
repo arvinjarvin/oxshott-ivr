@@ -75,6 +75,8 @@ function registerTaskRouterCallbacks() {
         logger("reservation.task.sid: " + taskSid);
     });
     worker.on('reservation.accepted', function (reservation) {
+        ringing.pause();
+        ringing.currentTime=0;
         logger("Reservation accepted, SID: " + reservation.sid);
         logger("---------");
         ReservationObject = reservation;
@@ -182,6 +184,8 @@ function rejectReservation() {
     ReservationObject.reject();
 }
 function acceptReservation() {
+    ringing.pause();
+    ringing.currentTime=0;
     logger("acceptReservation(): start a conference call, and connect caller and agent.");
     // Set Agent Conference on:
     //     https://www.twilio.com/console/voice/conferences/settings
