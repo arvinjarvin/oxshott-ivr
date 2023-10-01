@@ -29,7 +29,7 @@ function registerTaskRouterCallbacks() {
         }
         logger("Current activity is: " + worker.activityName);
         if (worker.activityName === "Unavailable") {
-            goOffline();
+            goAvailable();
         }
         logger("---------");
         setTrButtons(worker.activityName);
@@ -104,6 +104,7 @@ function registerTaskRouterCallbacks() {
         taskSid = "";
         logger("Reservation rejected, SID: " + reservation.sid + " by worker.sid: " + worker.sid);
         setTrButtons("canceled");
+        goAvailable();
     });
     worker.on('reservation.timeout', function (reservation) {
         ringing.pause();
@@ -111,6 +112,7 @@ function registerTaskRouterCallbacks() {
         taskSid = "";
         logger("Reservation timed out: " + reservation.sid);
         setTrButtons("Offline");
+        goAvailable();
     });
     worker.on('reservation.canceled', function (reservation) {
         ringing.pause();
@@ -118,6 +120,7 @@ function registerTaskRouterCallbacks() {
         taskSid = "";
         logger("Reservation canceled: " + reservation.sid);
         setTrButtons("canceled");
+        goAvailable();
     });
     // -----------------------------------------------------------------
 }
@@ -163,13 +166,6 @@ function goOffline() {
     ringing.pause();
     ringing.currentTime=0;
     logger("goOffline(): update worker's activity to: Offline.");
-    worker.update("ActivitySid", ActivitySid_Offline, function (error, worker) {
-        if (error) {
-            logger("--- goOffline, Error:");
-            logger(error.code);
-            logger(error.message);
-        }
-    });
 }
 function trHangup() {
     ringing.pause();
