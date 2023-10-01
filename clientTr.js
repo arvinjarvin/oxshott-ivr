@@ -99,16 +99,22 @@ function registerTaskRouterCallbacks() {
 
     });
     worker.on('reservation.rejected', function (reservation) {
+        ringing.pause();
+        ringing.currentTime=0;
         taskSid = "";
         logger("Reservation rejected, SID: " + reservation.sid + " by worker.sid: " + worker.sid);
         setTrButtons("canceled");
     });
     worker.on('reservation.timeout', function (reservation) {
+        ringing.pause();
+        ringing.currentTime=0;
         taskSid = "";
         logger("Reservation timed out: " + reservation.sid);
         setTrButtons("Offline");
     });
     worker.on('reservation.canceled', function (reservation) {
+        ringing.pause();
+        ringing.currentTime=0;
         taskSid = "";
         logger("Reservation canceled: " + reservation.sid);
         setTrButtons("canceled");
@@ -137,6 +143,8 @@ function taskReservationTaskFix() {
 
 // -----------------------------------------------------------------
 function goAvailable() {
+    ringing.pause();
+    ringing.currentTime=0;
     logger("goAvailable(): update worker's activity to: Available.");
     worker.update("ActivitySid", ActivitySid_Available, function (error, worker) {
         if (error) {
@@ -152,6 +160,8 @@ function goAvailable() {
     });
 }
 function goOffline() {
+    ringing.pause();
+    ringing.currentTime=0;
     logger("goOffline(): update worker's activity to: Offline.");
     worker.update("ActivitySid", ActivitySid_Offline, function (error, worker) {
         if (error) {
@@ -162,6 +172,8 @@ function goOffline() {
     });
 }
 function trHangup() {
+    ringing.pause();
+    ringing.currentTime=0;
     logger("trHangup(), set ReservationObject.task.complete().");
     ReservationObject.task.complete();
     worker.update("ActivitySid", ActivitySid_Offline, function (error, worker) {
@@ -180,6 +192,8 @@ function trHangup() {
 }
 // -----------------------------------------------------------------
 function rejectReservation() {
+    ringing.pause();
+    ringing.currentTime=0;
     logger("rejectReservation(): reject the reservation.");
     ReservationObject.reject();
 }
