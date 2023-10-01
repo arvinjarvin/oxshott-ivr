@@ -343,6 +343,7 @@ function setTrButtons(workerActivity) {
             $('#btn-acceptTR').prop('disabled', true);
             $('#btn-rejectTR').prop('disabled', true);
             $('#btn-trHangup').prop('disabled', true);
+            goAvailable();
             break;
         case "Incoming Reservation":
             ringing.play();
