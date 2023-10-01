@@ -11,6 +11,9 @@ var trTokenValid = false;
 var ActivitySid_Available = "";
 var ActivitySid_Offline = "";
 var ActivitySid_Unavailable = "";
+const ringing = new Audio('https://biotice.s3.eu-west-1.amazonaws.com/Phone+Ringing-SoundBible.com-1358131443.mp3');
+ringing.loop=true;
+
 // 
 // -----------------------------------------------------------------
 // let worker = new Twilio.TaskRouter.Worker("<?= $workerToken ?>");
@@ -319,6 +322,8 @@ function setTrButtons(workerActivity) {
             $('#btn-trHangup').prop('disabled', true);
             break;
         case "Offline":
+            ringing.pause();
+            ringing.currentTime=0;
             $('#btn-online').prop('disabled', false);
             $('#btn-offline').prop('disabled', true);
             $('#btn-acceptTR').prop('disabled', true);
@@ -326,6 +331,7 @@ function setTrButtons(workerActivity) {
             $('#btn-trHangup').prop('disabled', true);
             break;
         case "Incoming Reservation":
+            ringing.play();
             $('#btn-online').prop('disabled', true);
             $('#btn-offline').prop('disabled', true);
             $('#btn-acceptTR').prop('disabled', false);
@@ -333,6 +339,8 @@ function setTrButtons(workerActivity) {
             $('#btn-trHangup').prop('disabled', true);
             break;
         case 'reservation.accepted':
+            ringing.pause();
+            ringing.currentTime=0;
             $('#btn-online').prop('disabled', true);
             $('#btn-offline').prop('disabled', true);
             $('#btn-acceptTR').prop('disabled', true);
